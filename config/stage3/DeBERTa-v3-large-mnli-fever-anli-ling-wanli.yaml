@@ -1,0 +1,37 @@
+data:
+  directory: resources/train_xml
+  external_directory: resources/external_xml
+  external_labels: resources/external-stage2.csv
+  max_length: 1400
+  replace_prob: 0.05
+  num_folds: 5
+  fold_index: 0
+  random_seed: 42
+
+model:
+  transformer:
+    pretrained_model_name_or_path: MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli
+    hidden_dropout_prob: 0.1
+    attention_probs_dropout_prob: 0.1
+  random_seed: 42
+
+optim:
+  optimizer:
+    lr: 2e-5
+    betas: [0.9, 0.98]
+    eps: 1e-6
+    weight_decay: 0.01
+  scheduler:
+    name: linear
+    num_warmup_steps: 100
+    num_training_steps: 4000
+
+train:
+  name: DeBERTa-v3-large-mnli-fever-anli-ling-wanli
+  batch_size: 8
+  accumulate_grad_batches: 1
+  gradient_clip_val: 1.0
+  gradient_checkpointing: true
+  validation_interval: 0.01
+  log_every_n_steps: 10
+  evaluate_start_step: 2500
